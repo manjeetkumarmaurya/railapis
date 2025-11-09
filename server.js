@@ -10,7 +10,7 @@ app.use(cors());
 const agent = new https.Agent({ rejectUnauthorized: false });
 const PORT = process.env.PORT || 5000;
 
-app.get("/api/train/:query", async (req, res) => {
+app.get("/api/v1/trains/all-kvs", async (req, res) => {
   const { query } = req.params;
   const url = `https://railradar.in/api/v1/search/trains?q=${query}`;
   console.log("Fetching:", url);
