@@ -78,12 +78,9 @@ app.get("/api/v1/trains/all-kvs", async (req, res) => {
   }
 });
 
-app.get("/api/train/list", async (req, res) => {
-  const page = req.query.page || 1;
-  const limit = req.query.limit || 50;
-  const search = req.query.search || "";
-
-  const url = `https://railradar.in/api/v1/trains/list?page=${page}&limit=${limit}&type=&zone=&search=${search}`;
+app.get("/api/train/list/:query", async (req, res) => {
+ const { query } = req.params;
+  const url = `https://railradar.in/api/v1/trains/list?page=1&limit=50&type=&zone=&search=${query}`;
   console.log("Fetching:", url);
 
   try {
