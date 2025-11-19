@@ -113,4 +113,34 @@ app.get("/api/train/list/:query", async (req, res) => {
   }
 });
 
+
+app.get("/api/train/live/:trainNumber", async (req, res) => {
+  const { trainNumber } = req.params;
+  const { date } = req.query;   // <-- GET date properly
+
+  const journeyDate = date || ""; // fallback to blank or today
+
+  const url = `https://railradar.in/api/v1/trains/${trainNumber}?journeyDate=${journeyDate}&dataType=full&provider=railradar&userId=`;
+
+  console.log("Fetching:", url);
+
+  try {
+    const response = await fetch(url, {
+      agent,
+      headers: {
+        "User-Agent": "Mozilla/5.0",
+        "Accept": "application/json",
+        "Referer": "https://railradar.in/",
+      },
+    });
+
+    const text = await response.text();
+    res.json(JSON.parse(text));
+
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch train data" });
+  }
+});
+
+
 app.listen(PORT, () => console.log(`Proxy running on port ${PORT}`));
